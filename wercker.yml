@@ -1,7 +1,7 @@
 box: node
 
 services:
-  - rabbitmq
+  - redis
 
 build:
   steps:
@@ -14,8 +14,8 @@ build:
     - script:
       name: environment vars
       code: |
-        export RABBIT_HOST=$RABBITMQ_PORT_5672_TCP_ADDR
-        export RABBIT_PORT=$RABBITMQ_PORT_5672_TCP_PORT
+        export REDIS_HOST=$REDIS_PORT_6379_TCP_ADDR
+        export REDIS_PORT=$REDIS_PORT_6379_TCP_PORT
 
     - npm-test
 

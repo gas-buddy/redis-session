@@ -6,7 +6,10 @@ import redisSession from '../src/index';
 
 tap.test('test_connection', async (t) => {
   const configuredClient = new Redis({});
-  const redis = await configuredClient.start({});
+  const redis = await configuredClient.start({
+    hostname: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+  });
 
   const app = express();
   app.gb = { redis };
