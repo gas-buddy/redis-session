@@ -1,0 +1,33 @@
+box: node
+
+services:
+  - rabbitmq
+
+build:
+  steps:
+    - npm-install
+
+    - script:
+      name: lint
+      code: npm run lint
+
+    - script:
+      name: environment vars
+      code: |
+        export RABBIT_HOST=$RABBITMQ_PORT_5672_TCP_ADDR
+        export RABBIT_PORT=$RABBITMQ_PORT_5672_TCP_PORT
+
+    - npm-test
+
+    - script:
+      name: build
+      code: npm run build
+
+deploy:
+  steps:
+    - script:
+      name: npm publish
+      code: |
+        npm config set unsafe-perm true
+        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        npm publish . --tag latest

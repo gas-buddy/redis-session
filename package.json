@@ -1,0 +1,40 @@
+{
+  "name": "@gasbuddy/redis-session",
+  "version": "1.0.0",
+  "description": "A configuration driven session middleware for express.js",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "tap --node-arg=-r --node-arg=babel-register tests/*.js",
+    "test-some": "tap --node-arg=-r --node-arg=babel-register",
+    "cover": "nyc --reporter=lcov npm test",
+    "lint": "eslint .",
+    "build": "babel src --out-dir build",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:gas-buddy/redis-session.git"
+  },
+  "keywords": [
+    "redis",
+    "express",
+    "session",
+    "gasbuddy"
+  ],
+  "author": "GasBuddy",
+  "license": "MIT",
+  "devDependencies": {
+    "@gasbuddy/configured-redis-client": "^1.0.0",
+    "babel-cli": "^6.4.5",
+    "babel-preset-gasbuddy": "^2",
+    "bluebird": "^3.2.1",
+    "eslint": "^3.1.0",
+    "eslint-config-gasbuddy": "^2",
+    "tap": "^10",
+    "winston": "^2.3.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "express-session": "^1.15.2"
+  }
+}
