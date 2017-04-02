@@ -12,7 +12,7 @@ Sample configuration:
 ```
 {
   "meddleware": {
-    "module": "require:@gasbuddy/configured-redis-sesssion",
+    "module": "require:@gasbuddy/redis-sesssion",
     "arguments": [{
       schemas: {
         my-service-private-session: true,
