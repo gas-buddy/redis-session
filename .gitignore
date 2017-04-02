@@ -1,6 +1,7 @@
 # Custom
 .transpiled
 .nyc_output
+.tap_output
 yarn.lock
 
 # Wercker
