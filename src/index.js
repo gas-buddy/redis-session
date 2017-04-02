@@ -1,6 +1,6 @@
 import assert from 'assert';
 import express from 'express';
-import session from 'express-session';
+import expressSession from 'express-session';
 
 const ORIGINALS = Symbol('Original Redis values');
 
@@ -10,13 +10,13 @@ const ORIGINALS = Symbol('Original Redis values');
 const oneDay = 86400;
 
 function getTTL(store, sess) {
-  var maxAge = sess.cookie.maxAge;
+  const maxAge = sess.cookie.maxAge;
   return store.ttl || (typeof maxAge === 'number'
     ? Math.floor(maxAge / 1000)
     : oneDay);
 }
 
-class RedisSharedStore extends session.Store {
+class RedisSharedStore extends expressSession.Store {
   constructor(settings) {
     super(settings);
     this.schemas = ['.'];
@@ -51,7 +51,7 @@ class RedisSharedStore extends session.Store {
         return;
       }
       const minLen = Math.min(this.schemas.length, value.length);
-      for (let i = 0; i < minLen; i++) {
+      for (let i = 0; i < minLen; i += 1) {
         if (value[i]) {
           const hydrated = JSON.parse(value[i]);
           if (i === 0) {
@@ -107,7 +107,6 @@ class RedisSharedStore extends session.Store {
       }
     } catch (error) {
       callback(error);
-      return;
     }
   }
 
@@ -130,12 +129,26 @@ class RedisSharedStore extends session.Store {
   }
 }
 
+function resolve(parent, member, ...rest) {
+  const value = parent[member];
+  if (value && rest.length && rest[0]) {
+    return resolve(value, ...rest);
+  }
+  return value;
+}
+
 export default function redisSessionMiddleware(settings) {
   assert(settings.secret, 'Settings must include a \'secret\' value.');
   const store = new RedisSharedStore(settings);
-  const sessionMiddleware = session(Object.assign({}, settings, { store }));
+  const sessionMiddleware = expressSession(Object.assign({}, settings, { store }));
 
   function onMount(parent) {
+    const c = settings.redis;
+    if (typeof c === 'string') {
+      store.redis = resolve(parent, c.split('.'));
+    } else {
+      store.redis = c;
+    }
     store.redis = parent.gb.redis;
   }
 
