@@ -14,15 +14,15 @@ Sample configuration:
   "meddleware": {
     "module": "require:@gasbuddy/redis-sesssion",
     "arguments": [{
-      schemas: {
-        my-service-private-session: true,
-        my-service: true,
-        some-other-service: true,
-      },
-      secret: 'MuchSecret',
-      resave: false,
-      saveUninitialized: false,
-    }],
+      "schemas": {
+        "my-service-private-session": true,
+        "my-service": true,
+        "some-other-service": true,
+      }
+      "secret": 'MuchSecret',
+      "resave": false,
+      "saveUninitialized": false
+    }]
   }
 }
 ```
