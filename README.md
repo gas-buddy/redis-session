@@ -1,5 +1,7 @@
 @gasbuddy/redis-session
 ========================
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/gas-buddy/redis-session.svg)](https://greenkeeper.io/)
 A configuration-file driven express.js session store which uses
 Redis, but with HMGET/HMSET to allow for a microservice architecture
 to divide sessions in a useful way.
