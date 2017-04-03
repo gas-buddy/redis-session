@@ -1,6 +1,6 @@
 {
   "name": "@gasbuddy/redis-session",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A configuration driven session middleware for express.js",
   "main": "build/index.js",
   "scripts": {

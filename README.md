@@ -31,3 +31,7 @@ Note that this module requires a separately configured redis client
 (usually configured-redis-client) which is assumed to be found at app.gb.redis,
 but can be changed with a "client" configuration key that points to an instance
 of the redis client or a dot-capable property name relative to the app.
+
+Schemas correspond to keys on the hash that is stored in Redis. Any property on your
+session that is NOT part of a schema will be saved in the "." key. All schemas (and .)
+are JSON encoded and saved as a unit.

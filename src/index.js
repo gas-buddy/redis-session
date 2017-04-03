@@ -25,7 +25,10 @@ class RedisSharedStore extends expressSession.Store {
       if (k === '.') {
         throw new Error('The \'.\' schema is not configurable in redis-session');
       }
-      if (v) {
+      if (typeof v === 'string' && v) {
+        this.schemas.push(v);
+        this.schemaLookup[v] = true;
+      } else if (v === true) {
         this.schemas.push(k);
         this.schemaLookup[k] = true;
       }
