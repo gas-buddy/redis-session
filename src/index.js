@@ -10,7 +10,7 @@ const ORIGINALS = Symbol('Original Redis values');
 const oneDay = 86400;
 
 function getTTL(store, sess) {
-  const maxAge = sess.cookie.maxAge;
+  const { maxAge } = sess.cookie;
   return store.ttl || (typeof maxAge === 'number'
     ? Math.floor(maxAge / 1000)
     : oneDay);
