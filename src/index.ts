@@ -168,3 +168,5 @@ export default function redisSessionMiddleware(settings: RedisSessionOptions) {
     store,
   });
 }
+
+export * from './types';
