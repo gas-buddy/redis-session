@@ -1,37 +1,8 @@
-@gasbuddy/redis-session
-========================
+redis-session
+===============
 
-[![wercker status](https://app.wercker.com/status/fe7216469e3eae1d70a04c9582bd9874/s/master "wercker status")](https://app.wercker.com/project/byKey/fe7216469e3eae1d70a04c9582bd9874)
+![main CI](https://github.com/gas-buddy/redis-session/actions/workflows/nodejs.yml/badge.svg)
 
-A configuration-file driven express.js session store which uses
-Redis, but with HMGET/HMSET to allow for a microservice architecture
-to divide sessions in a useful way.
+[![npm version](https://badge.fury.io/js/@gasbuddy%2Fredis-session.svg)](https://badge.fury.io/js/@gasbuddy%2Fredis-session)
 
-Sample configuration:
-
-```
-{
-  "meddleware": {
-    "module": "require:@gasbuddy/redis-sesssion",
-    "arguments": [{
-      "schemas": {
-        "my-service-private-session": true,
-        "my-service": true,
-        "some-other-service": true,
-      }
-      "secret": 'MuchSecret',
-      "resave": false,
-      "saveUninitialized": false
-    }]
-  }
-}
-```
-
-Note that this module requires a separately configured redis client
-(usually configured-redis-client) which is assumed to be found at app.gb.redis,
-but can be changed with a "client" configuration key that points to an instance
-of the redis client or a dot-capable property name relative to the app.
-
-Schemas correspond to keys on the hash that is stored in Redis. Any property on your
-session that is NOT part of a schema will be saved in the "." key. All schemas (and .)
-are JSON encoded and saved as a unit.
+A configuration driven session middleware for express.js

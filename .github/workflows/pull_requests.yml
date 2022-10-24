@@ -1,0 +1,33 @@
+name: Build and run tests
+
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      npm_token:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:alpine
+        ports:
+        - 6379:6379
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - run: yarn install --immutable
+    - run: yarn build
+    - run: yarn lint
+    - run: yarn test
+
