@@ -9,6 +9,7 @@ import { RedisSessionOptions, RedisSessionStoreSettings } from './types/index';
 const ONE_DAY = 86400;
 
 const ORIGINALS = Symbol('Original Redis values');
+const WAS_FETCHED_OR_SAVED = Symbol('Session was fetched from redis');
 
 function getTTL(ttl: number, session: SessionData) {
   const { maxAge } = session.cookie;
@@ -17,6 +18,7 @@ function getTTL(ttl: number, session: SessionData) {
 
 interface InternalSession extends SessionData {
   [ORIGINALS]?: Record<string, string | null>;
+  [WAS_FETCHED_OR_SAVED]?: boolean;
   [key: string]: any;
 }
 
@@ -86,9 +88,10 @@ class RedisSharedStore extends Store {
         if (i === 0) {
           session = hydrated;
           session![ORIGINALS] = { '.': value[i] };
+          session![WAS_FETCHED_OR_SAVED] = true;
         } else {
           if (session === undefined) {
-            session = { [ORIGINALS]: {} } as InternalSession;
+            session = { [ORIGINALS]: {}, [WAS_FETCHED_OR_SAVED]: true } as InternalSession;
           }
           session[ORIGINALS]![this.schemas[i]] = value[i];
           session[this.schemas[i]] = hydrated;
@@ -136,6 +139,7 @@ class RedisSharedStore extends Store {
     } else {
       await this.redis.hmset(rKey, ...setArgs);
     }
+    session[WAS_FETCHED_OR_SAVED] = true;
   }
 
   destroy(sid: string | Array<string>, callback?: ((err?: any) => void) | undefined): void {
@@ -167,6 +171,10 @@ export default function redisSessionMiddleware(settings: RedisSessionOptions) {
     ...settings,
     store,
   });
+}
+
+export function sessionWasFetchedOrSaved(req: { session: any }) {
+  return (req.session as InternalSession)[WAS_FETCHED_OR_SAVED];
 }
 
 export * from './types';
